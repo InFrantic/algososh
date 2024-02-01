@@ -33,9 +33,7 @@ export const ListPage: React.FC = () => {
   const list = useRef(new LinkedList(randomArr));
   const [arr, setArr] = useState<string[]>(list.current.toArray());
   const [smallCircleIndex, setSmallCircleIndex] = useState(-1);
-  const [smallCircleLocation, setSmallCircleLocation] = useState<
-    Location | undefined
-  >(undefined);
+  const [smallCircleLocation, setSmallCircleLocation] = useState<Location | undefined>(undefined);
   const [typeElementStates, setTypeElementStates] = useState<TElementStates>({
     modifiedIndex: -1,
     changingIndex: -1,

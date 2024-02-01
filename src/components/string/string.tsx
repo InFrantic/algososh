@@ -31,7 +31,7 @@ export const StringComponent: React.FC = () => {
       swap(arr, i, end - 1)
       setStep(i => i + 1)
       setArrReverse([...arr])
-      await delay(500)
+      await delay(SHORT_DELAY_IN_MS)
     }
 
     setStep(i => i + 1)

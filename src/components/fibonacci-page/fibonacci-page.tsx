@@ -56,7 +56,9 @@ export const FibonacciPage: React.FC = () => {
           data-cy='submit'
           text='Рассчитать'
           type='submit'
-          disabled={!input || input > 19 || input < 1}
+          disabled={
+            !input || Number(input) > 19 || Number(input) < 1
+          }
           isLoader={inProgress}
         ></Button>
       </form>

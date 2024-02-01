@@ -50,7 +50,7 @@ export const StackPage: React.FC = () => {
       pop: true,
     }))
     setCurr(stack.getIndex())
-    await delay(500)
+    await delay(SHORT_DELAY_IN_MS)
     stack.pop()
     setArr([...stack.getStack()])
     setInProgress(prev => ({

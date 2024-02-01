@@ -72,8 +72,6 @@ export const SortingPage: React.FC = () => {
     setLoader(false);
   };
 
-
-
   const bubbleSort = async (arr: TArraySort[], sorting: Direction) => {
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
