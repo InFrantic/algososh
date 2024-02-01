@@ -2,7 +2,7 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import styles from "./queue.module.css";
 import { Queue } from "./units";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
@@ -27,8 +27,6 @@ export const QueuePage: React.FC = () => {
     setInputValue(e.currentTarget.value);
     setDisables(true);
   };
-  
-  const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
 
   const onClickEnqueue = async () => {
     setLoader({ ...loader, add: true });

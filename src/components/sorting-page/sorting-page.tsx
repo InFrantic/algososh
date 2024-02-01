@@ -3,7 +3,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { TArray, TArraySort, randomArr } from "./units";
 import { Direction } from "../../types/direction";
 import { ElementStates } from "../../types/element-states";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS, delay } from "../../constants/delays";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Column } from "../ui/column/column";
@@ -38,9 +38,7 @@ export const SortingPage: React.FC = () => {
     arr[firstIndex] = arr[secondIndex];
     arr[secondIndex] = temp;
   };
-
-  const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
-
+  
   const choiceSort = async (arr: TArraySort[], sorting: Direction) => {
     for (let i = 0; i < arr.length; i++) {
       let index = i;

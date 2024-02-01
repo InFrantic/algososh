@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useRef, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { LinkedList } from "./units";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 import { Circle } from "../ui/circle/circle";
 import { Input } from "../ui/input/input";
@@ -60,8 +60,6 @@ export const ListPage: React.FC = () => {
     setInputIndex(e.target.value);
   };
 
-  const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
-  
   const onClickAddHead = async () => {
     setLoader({ ...loader, loaderAddHead: true });
     setCurrentElement(inputValue);

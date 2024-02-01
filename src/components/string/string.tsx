@@ -5,6 +5,7 @@ import { Circle } from "../ui/circle/circle";
 import { Button } from "../ui/button/button";
 import { stateCircle, swap } from "./utils";
 import styles from './string.module.css'
+import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 
 export const StringComponent: React.FC = () => {
   const [input, setInput] = useState<string>('')
@@ -17,8 +18,6 @@ export const StringComponent: React.FC = () => {
     setInput(string)
   }
 
-  const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
-
   const reverseString = async (string: string): Promise<string[]> => {
     const arr = string.split('')
     let end = arr.length
@@ -26,7 +25,7 @@ export const StringComponent: React.FC = () => {
     setStep(0)
     setInProgress(true)
     setArrReverse([...arr])
-    await delay(500)
+    await delay(SHORT_DELAY_IN_MS)
 
     for (let i = 0; i < Math.floor(end / 2); i++) {
       swap(arr, i, end - 1)

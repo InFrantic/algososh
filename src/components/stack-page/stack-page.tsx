@@ -6,6 +6,7 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
 import styles from './stack-page.module.css'
+import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 
 type TInProgress = {
 	push: boolean
@@ -22,8 +23,6 @@ export const StackPage: React.FC = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
   }
-  
-  const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
 
   const push = async (value: string) => {
     setInProgress(prev => {
@@ -35,7 +34,7 @@ export const StackPage: React.FC = () => {
     stack.push(value)
     setArr(stack.getStack())
     setInput('')
-    await delay(500)
+    await delay(SHORT_DELAY_IN_MS)
     setCurr(curr + 1)
     setInProgress(prev => {
       return {
