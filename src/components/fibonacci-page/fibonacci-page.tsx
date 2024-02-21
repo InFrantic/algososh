@@ -4,6 +4,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from './fibonacci.module.css'
+import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
 
@@ -19,13 +20,11 @@ export const FibonacciPage: React.FC = () => {
     return fibNumbers
   }
 
-  const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
-
 	const fibonacci = async (input: number) => {
     setInProgress(true)
     const array = getFibNumbers(input)
     for (let i = 0; i <= array.length; i++) {
-      await delay(500)
+      await delay(SHORT_DELAY_IN_MS)
       setArr(array.slice(0, i+1))
     }
     setInProgress(false)
@@ -57,7 +56,9 @@ export const FibonacciPage: React.FC = () => {
           data-cy='submit'
           text='Рассчитать'
           type='submit'
-          disabled={!input || input > 19 || input < 1}
+          disabled={
+            !input || Number(input) > 19 || Number(input) < 1
+          }
           isLoader={inProgress}
         ></Button>
       </form>
