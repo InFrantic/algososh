@@ -4,7 +4,7 @@ import { Button } from '../ui/button/button'
 import { Column } from '../ui/column/column'
 import { RadioInput } from '../ui/radio-input/radio-input'
 import { SolutionLayout } from '../ui/solution-layout/solution-layout'
-import styles from './sorting-page.module.css'
+import styles from './sorting.module.css'
 import { TInProgress, TNewArr, bubbleSort, randomArr, selectionSort } from './units'
 
 
