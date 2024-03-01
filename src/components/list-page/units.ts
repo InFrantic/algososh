@@ -1,147 +1,141 @@
 export class Node<T> {
-    value: T
-    next: Node<T> | null
-    constructor(value: T, next?: Node<T> | null) {
-        this.value = value;
-        this.next = (next === undefined ? null : next);
-    }
+	value: T
+	next: Node<T> | null
+	constructor(value: T, next?: Node<T> | null) {
+		this.value = value
+		this.next = next === undefined ? null : next
+	}
 }
 
-interface ILinkedList<T> {
-    append: (element: T) => void;
-    prepend: (element: T) => void;
-    deleteHead: () => void;
-    deleteTail: () => void;
-    addByIndex: (element: T, index: number | undefined) => void;
-    deleteByIndex: (index: number) => void;
-    getSize: () => number;
+export interface INodeList<T> {
+	append: (item: T) => void
+	prepend: (item: T) => void
+	deleteHead: () => void
+	deleteTail: () => void
+	addByIndex: (item: T, index: number) => void
+	deleteByIndex: (index: number) => void
+	getSize: () => number
+	getArr: () => T[]
 }
 
-export class LinkedList<T> implements ILinkedList<T> {
-    private head: Node<T> | null;
-    private tail: Node<T> | null;
-    length: number;
+export class LinkedListNode<T> implements INodeList<T> {
+	private head: Node<T> | null
+	private size: number
+	constructor(arr: T[]) {
+		this.head = null
+		this.size = 0
+		arr.forEach(item => this.append(item))
+	}
 
-    constructor(randomArr?: T[]) {
-        this.head = null;
-        this.tail = null;
-        this.length = 0;
-        if (randomArr && randomArr.length > 0) {
-            randomArr?.forEach((item) => {
-                this.append(item)
-            })
-        }
-    }
+	append(item: T) {
+		const node = new Node(item)
+		let curr
 
-    append = (value: T) => {
-        const node = new Node(value);
-        if (!this.head || !this.tail) {
-            this.head = node;
-            this.tail = node;
-            this.length++;
-            return this;
-        }
-        this.tail.next = node;
-        this.tail = node;
-        this.length++;
-        return this;
-    }
+		if (this.head === null) {
+			this.head = node
+		} else {
+			curr = this.head
+			while (curr.next) {
+				curr = curr.next
+			}
+			curr.next = node
+		}
+		this.size++
+	}
 
-    prepend = (value: T) => {
-        const node = new Node(value);
-        if (!this.head || !this.tail) {
-            this.head = node;
-            this.head.next = null;
-            this.tail = node;
-        }
-        node.next = this.head;
-        this.head = node;
-    }
+	prepend(item: T): void {
+		const node = new Node(item, this.head)
 
-    deleteHead = () => {
-        if (!this.head) {
-            return null;
-        }
-        const delNode = this.head;
-        if (this.head.next) {
-            this.head = this.head.next;
-        } else {
-            this.head = null;
-            this.tail = null;
-        }
-        this.length--;
-        return delNode;
-    }
+		this.head = node
+		this.size++
+	}
 
-    deleteTail = () => {
-        if (!this.tail) {
-            return null;
-        }
-        let delNode = this.tail;
+	deleteHead() {
+		if (this.head) {
+			this.head = this.head.next
+			this.size--
+		}
+	}
 
-        if (this.head === this.tail) {
-            this.head = null;
-            this.tail = null;
-            return delNode;
-        }
-        let currNode = this.head;
-        while (currNode?.next) {
-            if (!currNode?.next.next) {
-                this.tail = currNode;
-                currNode.next = null;
-            } else {
-                currNode = currNode.next;
-            }
-        }
-        this.length--;
-    }
+	deleteTail() {
+		let curr
+		if (!this.head?.next) {
+			this.head = null
+		} else {
+			curr = this.head
+			while (curr.next?.next) {
+				curr = curr.next
+			}
+			curr.next = null
+		}
+		this.size--
+	}
 
-    addByIndex = (element: T, index: number | undefined) => {
-        if (index) {
-            const addNode = new Node(element);
-            console.log(index);
+	addByIndex(item: T, index: number) {
+		if (index < 0 || index > this.size) {
+			return
+		}
+		if (!this.head || index <= 0) {
+			this.prepend(item)
+		} else if (index >= this.size - 1) {
+			this.append(item)
+		} else {
+			let curr = this.head
+			let currIndex = 0
 
-            let curr = this.head;
-            let currIndex = 0;
-            while (currIndex < index) {
-                currIndex++;
-                if (curr?.next && currIndex !== index) {
-                    curr = curr?.next;
-                }
-            }
-            if (curr) {
-                addNode.next = curr.next;
-                curr.next = addNode;
-            }
-        }
+			while (currIndex !== index - 1 && curr.next) {
+				curr = curr.next
+				currIndex++
+			}
 
-    }
-    deleteByIndex = (index: number) => {
-        let curr = this.head;
-        let previous = curr;
-        if (previous && curr) {
-            if (curr === this.head) {
-                this.head = this.head.next;
-            } else if (curr === this.tail) {
-                previous.next = null;
-                this.tail = previous;
-            } else {
-                previous.next = curr.next;
-            }
-        }
-        this.length--;
-    }
+			const node = new Node(item, curr.next)
+			curr.next = node
+			this.size++
+		}
+	}
 
+	deleteByIndex(index: number) {
+		if (index < 0 || index > this.size) {
+			return
+		}
+		let curr = this.head
+		if (index === 0) {
+			if (this.head) this.head = this.head?.next
+		} else {
+			let prev = null
+			let currIndex = 0
+			while (currIndex++ < index) {
+				prev = curr
+				if (curr) {
+					curr = curr.next
+				}
+			}
+			if (prev?.next) prev.next = curr?.next ? curr.next : null
+		}
+		this.size--
+	}
 
-    toArray() {
-        let curr = this.head;
-        let res: T[] = [];
-        while (curr) {
-            res.push(curr.value);
-            curr = curr.next;
-        }
-        return res;
-    }
+	getSize() {
+		return this.size
+	}
 
-    getSize = () => this.length;
+	getArr() {
+		let curr = this.head
+		let arr: T[] = []
+		while (curr) {
+			arr.push(curr.value)
+			curr = curr.next
+		}
+		return arr
+	}
+}
+
+export const randomInt = (min: number, max: number): string => {
+	return String(Math.floor(min + Math.random() * (max + 1 - min)))
+}
+
+export const randomArr = (length: number): string[] => {
+	return Array.from({ length }, () => {
+		return randomInt(0, 100)
+	})
 }
