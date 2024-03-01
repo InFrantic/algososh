@@ -1,6 +1,5 @@
 import { ElementStates } from '../../types/element-states'
-import { bubbleSort, selectionSort } from './utils'
-
+import {bubbleSort, selectionSort } from './units'
 let testArr
 let sortingAsc
 let sortingDsc
