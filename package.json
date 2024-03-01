@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
-    "cypress": "^13.6.5",
+    "cypress": "^13.6.6",
     "eslint-plugin-cypress": "^2.15.1",
     "fetch-mock": "^9.11.0",
     "redux-mock-store": "^1.5.4"
