@@ -5,32 +5,32 @@
     margin: 0 auto;
     max-width: 952px;
     margin-bottom: 12px;
-}
-
-.input {
+  }
+  
+  .input {
     max-width: 204px;
-}
-
-.listItem {
+  }
+  
+  .listItem{
     display: flex;
     align-items: center;
     gap: 16px;
     position: relative;
-}
-
-.top {
+  }
+  
+  .top{
     position: absolute;
     top: -65px;
     left: 12px;
-}
-
-.bottom {
+  }
+  
+  .bottom{
     position: absolute;
     bottom: -105px;
     left: 12px;
-}
-
-.list {
+  }
+  
+  .list {
     display: flex;
     list-style-type: none;
     margin: 120px auto 100px;
@@ -40,4 +40,4 @@
     padding: 0;
     max-width: 944px;
     flex-wrap: wrap;
-}
+  }
