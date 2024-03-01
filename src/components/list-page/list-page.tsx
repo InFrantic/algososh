@@ -5,7 +5,7 @@ import { Circle } from '../ui/circle/circle'
 import { SolutionLayout } from '../ui/solution-layout/solution-layout'
 import { ArrowIcon } from '../ui/icons/arrow-icon'
 import { ElementStates } from '../../types/element-states'
-import styles from './list-page.module.css'
+import styles from './list.module.css'
 import { LinkedListNode, randomArr } from './units'
 import { delay } from '../../constants/delays'
 
