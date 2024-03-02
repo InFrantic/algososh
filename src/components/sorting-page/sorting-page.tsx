@@ -1,157 +1,92 @@
-import React, { ChangeEvent, useState } from "react";
-import { SolutionLayout } from "../ui/solution-layout/solution-layout";
-import { TArray, TArraySort, randomArr } from "./units";
-import { Direction } from "../../types/direction";
-import { ElementStates } from "../../types/element-states";
-import { DELAY_IN_MS, delay } from "../../constants/delays";
-import { RadioInput } from "../ui/radio-input/radio-input";
-import { Button } from "../ui/button/button";
-import { Column } from "../ui/column/column";
+import { FC, useEffect, useState } from 'react'
+import { Direction } from '../../types/direction'
+import { Button } from '../ui/button/button'
+import { Column } from '../ui/column/column'
+import { RadioInput } from '../ui/radio-input/radio-input'
+import { SolutionLayout } from '../ui/solution-layout/solution-layout'
 import styles from './sorting.module.css'
+import { TInProgress, TNewArr, bubbleSort, randomArr, selectionSort } from './units'
 
-export const SortingPage: React.FC = () => {
-  const [loader, setLoader] = useState(false);
-  const [arr, setArr] = useState<TArraySort[]>(randomArr());
-  const [radioInput, setRadioInput] = useState("choice");
-  const [sorting, setSorting] = useState<Direction>();
 
-  const onClick = () => {
-    setArr(randomArr());
-  };
+export const SortingPage: FC = () => {
+	const [newArr, setNewArr] = useState<TNewArr[]>([])
+	const [inProgress, setInProgress] = useState<TInProgress>({ ascending: false, descending: false })
+	const [checked, setChecked] = useState<string>('selection')
 
-  const OnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setRadioInput(e.target.value);
-  };
+	const handleNewArr = () => {
+		setNewArr(randomArr())
+	}
 
-  const sortingOnClick = (sorting: Direction) => {
-    setSorting(sorting);
-    setLoader(true);
-    if (radioInput === "choice") {
-      choiceSort(arr, sorting);
-    } else {
-      bubbleSort(arr, sorting);
-    }
-  };
+	const handleAscending = () => {
+		setInProgress({...inProgress, ascending: true, descending: false})
+		if (checked === 'selection') selectionSort(true, newArr, setNewArr, 250)
+		if (checked === 'bubble') bubbleSort(true, newArr, setNewArr, 250)
+		setInProgress({ ...inProgress, ascending: false, descending: false })
+	}
+	const handleDescending = () => {
+		setInProgress({ ...inProgress, ascending: false, descending: true })
+		if (checked === 'selection') selectionSort(false, newArr, setNewArr, 250)
+		if (checked === 'bubble') bubbleSort(false, newArr, setNewArr, 250)
+		setInProgress({ ...inProgress, ascending: false, descending: false })
+	}
+	
+		 useEffect(() => {
+				setNewArr(randomArr())
+			}, [])
 
-  const swap = (arr: TArray[] | TArraySort[] | string[], firstIndex: number, secondIndex: number): void => {
-    const temp = arr[firstIndex];
-    arr[firstIndex] = arr[secondIndex];
-    arr[secondIndex] = temp;
-  };
-  
-  const choiceSort = async (arr: TArraySort[], sorting: Direction) => {
-    for (let i = 0; i < arr.length; i++) {
-      let index = i;
-      for (let j = i + 1; j < arr.length; j++) {
-        arr[i].color = ElementStates.Changing;
-        arr[j].color = ElementStates.Changing;
-        setArr([...arr]);
-        await delay(DELAY_IN_MS);
-        if (sorting === Direction.Ascending) {
-          if (arr[j].state < arr[index].state) {
-            index = j;
-            swap(arr, j, index);
-            setArr([...arr]);
-          }
-        }
-        if (sorting === Direction.Descending) {
-          if (arr[j].state > arr[index].state) {
-            index = j;
-            swap(arr, j, index);
-            setArr([...arr]);
-          }
-        }
-        arr[j].color = ElementStates.Default;
-        arr[i].color = ElementStates.Default;
-        setArr([...arr]);
-      }
-      arr[index].color = ElementStates.Modified;
-      swap(arr, i, index);
-      setArr([...arr]);
-    }
-    setLoader(false);
-  };
-
-  const bubbleSort = async (arr: TArraySort[], sorting: Direction) => {
-    for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < arr.length - i - 1; j++) {
-        arr[j].color = ElementStates.Changing;
-        arr[j + 1].color = ElementStates.Changing;
-        setArr([...arr]);
-        await delay(DELAY_IN_MS);
-        if (sorting === Direction.Ascending) {
-          if (arr[j].state > arr[j + 1].state) {
-            swap(arr, j, j + 1);
-          }
-        }
-        if (sorting === Direction.Descending) {
-          if (arr[j].state < arr[j + 1].state) {
-            swap(arr, j, j + 1);
-          }
-        }
-        arr[j].color = ElementStates.Default;
-        arr[j + 1].color = ElementStates.Default;
-        setArr([...arr]);
-      }
-      const length = arr.length;
-      arr[length - i - 1].color = ElementStates.Modified;
-      setArr([...arr]);
-    }
-    setArr([...arr]);
-    setLoader(false);
-  };
-
-  return (
-    <SolutionLayout title="Сортировка массива">
-      <div className={styles.container}>
-        <fieldset className={styles.radioContainer}>
-          <RadioInput
-            label="Выбор"
-            name="radioButton"
-            value="choice"
-            checked={radioInput === "choice"}
-            onChange={OnChange}
-          />
-          <RadioInput
-            label="Пузырёк"
-            name="radioButton"
-            value="bubble"
-            checked={radioInput === "bubble"}
-            onChange={OnChange}
-          />
-        </fieldset>
-        <fieldset className={`${styles.sortContainer}`}>
-          <Button
-            sorting={Direction.Ascending}
-            text="По возрастанию"
-            isLoader={loader && sorting === Direction.Ascending}
-            onClick={() => {
-              sortingOnClick(Direction.Ascending);
-            }}
-            disabled={loader}
-          />
-          <Button
-            sorting={Direction.Descending}
-            text="По убыванию"
-            isLoader={loader && sorting === Direction.Descending}
-            onClick={() => {
-              sortingOnClick(Direction.Descending);
-            }}
-            disabled={loader}
-          />
-        </fieldset>
-        <Button text="Новый массив" onClick={onClick} disabled={loader} />
-      </div>
-      <ul className={styles.content}>
-        {arr &&
-          arr?.map((item, index) => {
-            return (
-              <li className="" key={index}>
-                <Column index={item.state} state={item.color} />
-              </li>
-            );
-          })}
-      </ul>
-    </SolutionLayout>
-  );
-};
+	return (
+		<SolutionLayout title='Сортировка массива'>
+			<form className={styles.layout}>
+				<div className={styles.radioWrap}>
+					<RadioInput
+						label='Выбор'
+						value='selection'
+						name='sorting'
+						checked={checked === 'selection'}
+						onChange={() => setChecked('selection')}
+						disabled={inProgress.ascending || inProgress.descending}
+					/>
+					<RadioInput
+						label='Пузырек'
+						value='bubble'
+						name='sorting'
+						checked={checked === 'bubble'}
+						onChange={() => setChecked('bubble')}
+						disabled={inProgress.ascending || inProgress.descending}
+					/>
+				</div>
+				<div className={styles.sortingWrap}>
+					<Button
+						text='По возрастанию'
+						sorting={Direction.Ascending}
+						extraClass={styles.btn}
+						disabled={inProgress.ascending || inProgress.descending}
+						isLoader={inProgress.ascending}
+						onClick={() => handleAscending()}
+					/>
+					<Button
+						text='По убыванию'
+						sorting={Direction.Descending}
+						extraClass={styles.btn}
+						disabled={inProgress.ascending || inProgress.descending}
+						isLoader={inProgress.descending}
+						onClick={() => handleDescending()}
+					/>
+				</div>
+				<div>
+					<Button
+						text='Новый массив'
+						extraClass={styles.btn}
+						onClick={handleNewArr}
+						disabled={inProgress.ascending || inProgress.descending}
+					/>
+				</div>
+			</form>
+			<div className={styles.list}>
+				{newArr.map((item, index) => {
+							return <Column index={item.item} key={index} state={item.state} />
+					  })}
+			</div>
+		</SolutionLayout>
+	)
+}

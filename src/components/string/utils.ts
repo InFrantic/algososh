@@ -13,3 +13,14 @@ export const stateCircle = (index: number, step: number, arr: Array<string | num
 	}
 	return ElementStates.Default
 }
+
+export function reverseString(string: string) {
+	const arr = string.split('')
+	let end = arr.length
+
+	for (let i = 0; i < Math.floor(end / 2); i++) {
+		swap(arr, i, end - 1)
+	}
+
+	return arr
+}

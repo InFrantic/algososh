@@ -1,35 +1,29 @@
-.container {
-	display: flex;
+.layout {
 	max-width: 980px;
-	margin: 0 auto;
+	display: flex;
+	margin: auto;
+	gap: 12px;
 	align-items: center;
 	justify-content: space-between;
 }
-
-.radioContainer {
+.radioWrap {
+	max-width: 221px;
 	display: flex;
-	column-gap: 40px;
-	margin: 0;
-	padding: 0;
-	border: none;
+	gap: 40px;
 }
-
-.sortContainer {
+.sortingWrap {
+	max-width: 422px;
 	display: flex;
-	margin: 0;
-	padding: 0;
-	border: none;
-	column-gap: 12px;
+	gap: 12px;
 }
-
-.content {
+.btn {
+	width: 205px;
+}
+.list {
+	margin-top: 48px;
 	display: flex;
-	list-style-type: none;
+	gap: 10px;
 	justify-content: center;
-	align-items: center;
 	align-items: flex-end;
-	margin: 48px auto 0;
-	column-gap: 10px;
-	padding: 0;
-	max-width: 980px;
+	height: 368px;
 }
